@@ -31,10 +31,14 @@ int main() {
 		// Get Input
 		int op = input();
 		if ( !op ) continue;
+
+		// Refresh Screen
 		system( "CLS" );
 		printHelp();
 
+		// Do Operation
 		if ( op == 1 ) {
+			// 1. Print Cursor Position
 			POINT cursor;
 			GetCursorPos( &cursor );
 			std::cout << " Current Cursor Position \n";
