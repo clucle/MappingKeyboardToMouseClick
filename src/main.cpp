@@ -2,6 +2,16 @@
 #include <iostream>
 #include <windows.h>
 
+void setWindowSize() {
+	HWND console = GetConsoleWindow();
+	RECT r;
+	GetWindowRect( console, &r ); //stores the console's current dimensions
+
+	const int width = 600;
+	const int height = 400;
+	MoveWindow( console, r.left, r.top, width, height, TRUE ); // 800 width, 100 heigh
+}
+
 void printHelp() {
 	std::cout << "忙式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式忖\n";
 	std::cout << "弛    MappingKeyboardToMouseClick    弛\n";
@@ -24,6 +34,7 @@ int input() {
 
 int main() {
 	
+	setWindowSize();
 	printHelp();
 
 	while( true )
