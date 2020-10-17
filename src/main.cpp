@@ -32,6 +32,13 @@ int input() {
 	return ret;
 }
 
+void printCursorPosition() {
+	POINT cursor;
+	GetCursorPos( &cursor );
+	std::cout << " Current Cursor Position \n";
+	std::cout << "  - x : " << cursor.x << " y : " << cursor.y << '\n';
+}
+
 int main() {
 	
 	setWindowSize();
@@ -49,11 +56,7 @@ int main() {
 
 		// Do Operation
 		if ( op == 1 ) {
-			// 1. Print Cursor Position
-			POINT cursor;
-			GetCursorPos( &cursor );
-			std::cout << " Current Cursor Position \n";
-			std::cout << "  - x : " << cursor.x << " y : " << cursor.y << '\n';
+			printCursorPosition();
 		}
 	}
 }
