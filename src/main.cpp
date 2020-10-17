@@ -1,6 +1,9 @@
 
 #include <iostream>
+#include <map>
 #include <windows.h>
+
+typedef std::pair<int, int> PairXY;
 
 void setWindowSize() {
 	HWND console = GetConsoleWindow();
@@ -32,17 +35,56 @@ int input() {
 	return ret;
 }
 
-void printCursorPosition() {
+PairXY printCursorPosition() {
 	POINT cursor;
 	GetCursorPos( &cursor );
 	std::cout << " Current Cursor Position \n";
 	std::cout << "  - x : " << cursor.x << " y : " << cursor.y << '\n';
+	return { cursor.x, cursor.y };
+}
+
+void printCursorPosition( int& last_x, int& last_y ) {
+	PairXY pxy = printCursorPosition();
+	last_x = pxy.first;
+	last_y = pxy.second;
+}
+
+void mapKeyboardToMouseclick(
+	int& last_x, int& last_y,
+	std::map< char, PairXY >& mapKeyboardToMousePosition ) {
+
+	std::cout << " Last Printed Cursor Position \n";
+	std::cout << "  - x : " << last_x << " y : " << last_y << '\n';
+	
+	printCursorPosition();
+
+	char key;
+	int x, y;
+	std::cout << " Input key (ex : a) : ";  std::cin >> key;
+	std::cout << " Input X Position ";      std::cin >> x;
+	std::cout << " Input Y Position ";      std::cin >> y;
+	mapKeyboardToMousePosition[key] = { x, y };
+	
+	std::cout << " Success!\n";
+}
+
+void printMapKeyboardToMouseclick( std::map< char, PairXY >& mapKeyboardToMousePosition ) {
+	for ( auto& e : mapKeyboardToMousePosition )
+	{
+		std::cout << "Key : " << e.first <<
+			" >> Position { x : " << e.second.first << ", y : " << e.second.second << " }\n";
+	}
 }
 
 int main() {
 	
 	setWindowSize();
 	printHelp();
+
+	int last_x = 0;
+	int last_y = 0;
+	
+	std::map< char, PairXY > mapKeyboardToMousePosition;
 
 	while( true )
 	{
@@ -55,8 +97,16 @@ int main() {
 		printHelp();
 
 		// Do Operation
-		if ( op == 1 ) {
-			printCursorPosition();
+		switch ( op ) {
+		case 1:
+			printCursorPosition( last_x, last_y );
+			break;
+		case 2:
+			mapKeyboardToMouseclick( last_x, last_y, mapKeyboardToMousePosition );
+			break;
+		case 3:
+			printMapKeyboardToMouseclick( mapKeyboardToMousePosition );
+			break;
 		}
 	}
 }
